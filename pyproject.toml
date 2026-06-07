@@ -1,0 +1,7 @@
+[project]
+name = "xgparse"
+version = "0.1.0"
+description = "parser for eXtreme Gammon files"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
