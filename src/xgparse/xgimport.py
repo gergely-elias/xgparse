@@ -28,8 +28,8 @@ from enum import IntEnum
 from pathlib import Path
 from typing import BinaryIO
 
-import xgstruct
-import xgzarc
+from . import xgstruct
+from . import xgzarc
 
 
 # ---------------------------------------------------------------------------

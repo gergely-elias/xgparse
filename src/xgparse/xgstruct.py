@@ -33,7 +33,7 @@ from dataclasses import dataclass, field
 from enum import IntEnum
 from typing import BinaryIO
 
-import xgutils
+from . import xgutils
 
 # Convenience alias used throughout: a 26-element signed-byte board position.
 Position = tuple[int, ...]

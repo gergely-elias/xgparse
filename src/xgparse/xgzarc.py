@@ -30,7 +30,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import BinaryIO
 
-import xgutils
+from . import xgutils
 
 
 class Error(Exception):

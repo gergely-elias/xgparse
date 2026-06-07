@@ -23,9 +23,9 @@ import argparse
 import pprint
 from pathlib import Path
 
-import xgimport
-import xgstruct
-import xgzarc
+from . import xgimport
+from . import xgstruct
+from . import xgzarc
 
 
 def _valid_directory(parser: argparse.ArgumentParser, path: str) -> Path:
