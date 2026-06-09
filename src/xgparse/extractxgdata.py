@@ -28,10 +28,10 @@ from . import xgstruct
 from . import xgzarc
 
 
-def _valid_directory(parser: argparse.ArgumentParser, path: str) -> Path:
+def _valid_directory(path: str) -> Path:
     p = Path(path)
     if not p.is_dir():
-        parser.error(f"Directory '{path}' does not exist")
+        argparse.ArgumentTypeError(f"Directory '{path}' does not exist")
     return p
 
 
@@ -45,7 +45,7 @@ def main() -> None:
         metavar="DIR",
         dest="outdir",
         help="Directory to write segments to (default: same directory as the import file)\n",
-        type=lambda p: _valid_directory(parser, p),
+        type=_valid_directory,
         default=None,
     )
     parser.add_argument(
