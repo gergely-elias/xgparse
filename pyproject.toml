@@ -1,6 +1,6 @@
 [project]
 name = "xgparse"
-version = "0.1.2"
+version = "0.1.3"
 authors = [
   { name="Gergely Elias", email="gergely.elias@gmail.com" },
 ]
