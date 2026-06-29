@@ -1,5 +1,5 @@
 #
-#   convertxg2txt.py - XG data to text conversion tool
+#   convertxg.py - XG data to text conversion tool
 #   Copyright (C) 2026  Gergely Elias <gergely.elias@gmail.com>
 #
 #   This program is free software: you can redistribute it and/or modify
@@ -19,15 +19,23 @@
 from __future__ import annotations
 
 import pprint
+from collections.abc import Generator
 
 from . import xgimport
 from . import xgstruct
 
 
-def convert_xg_to_text(path: str) -> bytes:
-    """Convert XG data to text format, returning the text as bytes."""
+def convert_xg_to_py_dataclasses(
+    path: str,
+) -> Generator[xgstruct.GameRecord | xgstruct.RolloutContextEntry, None, None]:
+    """Yield parsed records from an XG file as dataclass objects.
+
+    Produces the same sequence as :func:`convert_xg_to_text` but returns
+    live dataclass instances instead of a text dump.  :class:`~xgstruct.UnimplementedEntry`
+    records are skipped (matching the text-dump behaviour).  Rollout records
+    are yielded after all game records.
+    """
     importer = xgimport.Import(path)
-    output = []
     file_version = -1
 
     for segment in importer.get_file_segments():
@@ -40,7 +48,7 @@ def convert_xg_to_text(path: str) -> bytes:
                 if isinstance(rec, xgstruct.HeaderMatchEntry):
                     file_version = rec.version
                 if not isinstance(rec, xgstruct.UnimplementedEntry):
-                    output.append(pprint.pformat(rec, width=160))
+                    yield rec
 
         elif segment.seg_type is xgimport.SegmentType.XG_ROLLOUTS:
             segment.fd.seek(0)
@@ -48,6 +56,10 @@ def convert_xg_to_text(path: str) -> bytes:
                 rec = xgstruct.read_rollout_record(segment.fd)
                 if rec is None:
                     break
-                output.append(pprint.pformat(rec, width=160))
+                yield rec
 
+
+def convert_xg_to_text(path: str) -> bytes:
+    """Convert XG data to text format, returning the text as bytes."""
+    output = [pprint.pformat(rec, width=160) for rec in convert_xg_to_py_dataclasses(path)]
     return "\n".join(output).encode("utf-8")

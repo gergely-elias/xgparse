@@ -31,12 +31,20 @@ import struct
 import uuid
 from dataclasses import dataclass, field
 from enum import IntEnum
-from typing import BinaryIO
+from typing import BinaryIO, TypeAlias
 
 from . import xgutils
 
 # Convenience alias used throughout: a 26-element signed-byte board position.
-Position = tuple[int, ...]
+Position: TypeAlias = tuple[
+    int, int, int, int, int, int, int, int, int, int,
+    int, int, int, int, int, int, int, int, int, int,
+    int, int, int, int, int, int
+]
+
+# An 8-element move tuple: up to 4 checker moves encoded as (src1, dst1, src2, dst2, ...),
+# padded with -1 sentinels for unused slots.
+MoveTuple: TypeAlias = tuple[int, int, int, int, int, int, int, int]
 
 
 # ---------------------------------------------------------------------------
